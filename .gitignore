@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# VS
+*Debug/
+*Release/
+*.vs/
+Compile.vmps.xml
+Configuration.Debug.vmps.xml
+Configuration.Release.vmps.xml
+Upload.vmps.xml

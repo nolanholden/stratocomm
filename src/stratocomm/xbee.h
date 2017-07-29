@@ -181,28 +181,28 @@ public:
 	/**
 	 * Returns Api Id of the response
 	 */
-	uint8_t getApiId();
+	uint8_t getApiId() const;
 	void setApiId(uint8_t apiId);
 	/**
 	 * Returns the MSB length of the packet
 	 */
-	uint8_t getMsbLength();
+	uint8_t getMsbLength() const;
 	void setMsbLength(uint8_t msbLength);
 	/**
 	 * Returns the LSB length of the packet
 	 */
-	uint8_t getLsbLength();
+	uint8_t getLsbLength() const;
 	void setLsbLength(uint8_t lsbLength);
 	/**
 	 * Returns the packet checksum
 	 */
-	uint8_t getChecksum();
+	uint8_t getChecksum() const;
 	void setChecksum(uint8_t checksum);
 	/**
 	 * Returns the length of the frame data: all bytes after the api id, and prior to the checksum
 	 * Note up to release 0.1.2, this was incorrectly including the checksum in the length.
 	 */
-	uint8_t getFrameDataLength();
+	uint8_t getFrameDataLength() const;
 	void setFrameData(uint8_t* frameDataPtr);
 	/**
 	 * Returns the buffer that contains the response.
@@ -212,14 +212,14 @@ public:
 	 * The reason for this is all responses include an API ID, whereas my frame data
 	 * includes only the API specific data.
 	 */
-	uint8_t* getFrameData();
+	uint8_t* getFrameData() const;
 
 	void setFrameLength(uint8_t frameLength);
 	// to support future 65535 byte packets I guess
 	/**
 	 * Returns the length of the packet
 	 */
-	uint16_t getPacketLength();
+	uint16_t getPacketLength() const;
 	/**
 	 * Resets the response to default values
 	 */
@@ -233,77 +233,77 @@ public:
 	 * Call with instance of ZBTxStatusResponse class only if getApiId() == ZB_TX_STATUS_RESPONSE
 	 * to populate response
 	 */
-	void getZBTxStatusResponse(XBeeResponse &response);
+	void getZBTxStatusResponse(XBeeResponse &response) const;
 	/**
 	 * Call with instance of ZBRxResponse class only if getApiId() == ZB_RX_RESPONSE
 	 * to populate response
 	 */
-	void getZBRxResponse(XBeeResponse &response);
+	void getZBRxResponse(XBeeResponse &response) const;
 	/**
 	 * Call with instance of ZBExplicitRxResponse class only if getApiId() == ZB_EXPLICIT_RX_RESPONSE
 	 * to populate response
 	 */
-	void getZBExplicitRxResponse(XBeeResponse &response);
+	void getZBExplicitRxResponse(XBeeResponse &response) const;
 	/**
 	 * Call with instance of ZBRxIoSampleResponse class only if getApiId() == ZB_IO_SAMPLE_RESPONSE
 	 * to populate response
 	 */
-	void getZBRxIoSampleResponse(XBeeResponse &response);
+	void getZBRxIoSampleResponse(XBeeResponse &response) const;
 #endif
 #ifdef SERIES_1
 	/**
 	 * Call with instance of TxStatusResponse only if getApiId() == TX_STATUS_RESPONSE
 	 */
-	void getTxStatusResponse(XBeeResponse &response);
+	void getTxStatusResponse(XBeeResponse &response) const;
 	/**
 	 * Call with instance of Rx16Response only if getApiId() == RX_16_RESPONSE
 	 */
-	void getRx16Response(XBeeResponse &response);
+	void getRx16Response(XBeeResponse &response) const;
 	/**
 	 * Call with instance of Rx64Response only if getApiId() == RX_64_RESPONSE
 	 */
-	void getRx64Response(XBeeResponse &response);
+	void getRx64Response(XBeeResponse &response) const;
 	/**
 	 * Call with instance of Rx16IoSampleResponse only if getApiId() == RX_16_IO_RESPONSE
 	 */
-	void getRx16IoSampleResponse(XBeeResponse &response);
+	void getRx16IoSampleResponse(XBeeResponse &response) const;
 	/**
 	 * Call with instance of Rx64IoSampleResponse only if getApiId() == RX_64_IO_RESPONSE
 	 */
-	void getRx64IoSampleResponse(XBeeResponse &response);
+	void getRx64IoSampleResponse(XBeeResponse &response) const;
 #endif
 	/**
 	 * Call with instance of AtCommandResponse only if getApiId() == AT_COMMAND_RESPONSE
 	 */
-	void getAtCommandResponse(XBeeResponse &responses);
+	void getAtCommandResponse(XBeeResponse &responses) const;
 	/**
 	 * Call with instance of RemoteAtCommandResponse only if getApiId() == REMOTE_AT_COMMAND_RESPONSE
 	 */
-	void getRemoteAtCommandResponse(XBeeResponse &response);
+	void getRemoteAtCommandResponse(XBeeResponse &response) const;
 	/**
 	 * Call with instance of ModemStatusResponse only if getApiId() == MODEM_STATUS_RESPONSE
 	 */
-	void getModemStatusResponse(XBeeResponse &response);
+	void getModemStatusResponse(XBeeResponse &response) const;
 	/**
 	 * Returns true if the response has been successfully parsed and is complete and ready for use
 	 */
-	bool isAvailable();
+	bool isAvailable() const;
 	void setAvailable(bool complete);
 	/**
 	 * Returns true if the response contains errors
 	 */
-	bool isError();
+	bool isError() const;
 	/**
 	 * Returns an error code, or zero, if successful.
 	 * Error codes include: CHECKSUM_FAILURE, PACKET_EXCEEDS_BYTE_ARRAY_LENGTH, UNEXPECTED_START_BYTE
 	 */
-	uint8_t getErrorCode();
+	uint8_t getErrorCode() const;
 	void setErrorCode(uint8_t errorCode);
 protected:
 	// pointer to frameData
 	uint8_t* _frameDataPtr;
 private:
-	void setCommon(XBeeResponse &target);
+	void setCommon(XBeeResponse &target) const;
 	uint8_t _apiId;
 	uint8_t _msbLength;
 	uint8_t _lsbLength;
@@ -334,8 +334,8 @@ public:
 	uint32_t getLsb() {return _lsb;}
 	uint64_t get() {return (static_cast<uint64_t>(_msb) << 32) | _lsb;}
 	operator uint64_t() {return get();}
-	void setMsb(uint32_t msb) {_msb = msb;}
-	void setLsb(uint32_t lsb) {_lsb = lsb;}
+	void setMsb(uint32_t msb) const {_msb = msb;}
+	void setLsb(uint32_t lsb) const {_lsb = lsb;}
 	void set(uint64_t addr) {
 		_msb = addr >> 32;
 		_lsb = addr;
@@ -343,8 +343,8 @@ public:
 private:
 	// Once https://gcc.gnu.org/bugzilla/show_bug.cgi?id=66511 is
 	// fixed, it might make sense to merge these into a uint64_t.
-	uint32_t _msb;
-	uint32_t _lsb;
+	mutable uint32_t _msb;
+  mutable uint32_t _lsb;
 };
 
 //class XBeeAddress16 : public XBeeAddress {
@@ -363,7 +363,7 @@ private:
 class FrameIdResponse : public XBeeResponse {
 public:
 	FrameIdResponse();
-	uint8_t getFrameId();
+	uint8_t getFrameId() const;
 private:
 	uint8_t _frameId;
 };
@@ -378,19 +378,19 @@ public:
 	 * Returns the specified index of the payload.  The index may be 0 to getDataLength() - 1
 	 * This method is deprecated; use uint8_t* getData()
 	 */
-	uint8_t getData(int index);
+	uint8_t getData(int index) const;
 	/**
 	 * Returns the payload array.  This may be accessed from index 0 to getDataLength() - 1
 	 */
-	uint8_t* getData();
+	uint8_t* getData() const;
 	/**
 	 * Returns the length of the payload
 	 */
-	virtual uint8_t getDataLength() = 0;
+	virtual uint8_t getDataLength() const = 0;
 	/**
 	 * Returns the position in the frame data where the data begins
 	 */
-	virtual uint8_t getDataOffset() = 0;
+	virtual uint8_t getDataOffset() const = 0;
 };
 
 // getResponse to return the proper subclass:
@@ -404,11 +404,11 @@ public:
 class ZBTxStatusResponse : public FrameIdResponse {
 	public:
 		ZBTxStatusResponse();
-		uint16_t getRemoteAddress();
-		uint8_t getTxRetryCount();
-		uint8_t getDeliveryStatus();
-		uint8_t getDiscoveryStatus();
-		bool isSuccess();
+		uint16_t getRemoteAddress() const;
+		uint8_t getTxRetryCount() const;
+		uint8_t getDeliveryStatus() const;
+		uint8_t getDiscoveryStatus() const;
+		bool isSuccess() const;
 
 	static const uint8_t API_ID = ZB_TX_STATUS_RESPONSE;
 };
@@ -419,12 +419,12 @@ class ZBTxStatusResponse : public FrameIdResponse {
 class ZBRxResponse : public RxDataResponse {
 public:
 	ZBRxResponse();
-	XBeeAddress64& getRemoteAddress64();
-	uint16_t getRemoteAddress16();
-	uint8_t getOption();
-	uint8_t getDataLength();
+	const XBeeAddress64& getRemoteAddress64() const;
+	uint16_t getRemoteAddress16() const;
+	uint8_t getOption() const;
+	uint8_t getDataLength() const;
 	// frame position where data starts
-	uint8_t getDataOffset();
+	uint8_t getDataOffset() const;
 
 	static const uint8_t API_ID = ZB_RX_RESPONSE;
 private:
@@ -440,14 +440,14 @@ private:
 class ZBExplicitRxResponse : public ZBRxResponse {
 public:
 	ZBExplicitRxResponse();
-	uint8_t getSrcEndpoint();
-	uint8_t getDstEndpoint();
-	uint16_t getClusterId();
-	uint16_t getProfileId();
-	uint8_t getOption();
-	uint8_t getDataLength();
+	uint8_t getSrcEndpoint() const;
+	uint8_t getDstEndpoint() const;
+	uint16_t getClusterId() const;
+	uint16_t getProfileId() const;
+	uint8_t getOption() const;
+	uint8_t getDataLength() const;
 	// frame position where data starts
-	uint8_t getDataOffset();
+	uint8_t getDataOffset() const;
 
 	static const uint8_t API_ID = ZB_EXPLICIT_RX_RESPONSE;
 };
@@ -458,29 +458,29 @@ public:
 class ZBRxIoSampleResponse : public ZBRxResponse {
 public:
 	ZBRxIoSampleResponse();
-	bool containsAnalog();
-	bool containsDigital();
+	bool containsAnalog() const;
+	bool containsDigital() const;
 	/**
 	 * Returns true if the pin is enabled
 	 */
-	bool isAnalogEnabled(uint8_t pin);
+	bool isAnalogEnabled(uint8_t pin) const;
 	/**
 	 * Returns true if the pin is enabled
 	 */
-	bool isDigitalEnabled(uint8_t pin);
+	bool isDigitalEnabled(uint8_t pin) const;
 	/**
 	 * Returns the 10-bit analog reading of the specified pin.
 	 * Valid pins include ADC:xxx.
 	 */
-	uint16_t getAnalog(uint8_t pin);
+	uint16_t getAnalog(uint8_t pin) const;
 	/**
 	 * Returns true if the specified pin is high/on.
 	 * Valid pins include DIO:xxx.
 	 */
-	bool isDigitalOn(uint8_t pin);
-	uint8_t getDigitalMaskMsb();
-	uint8_t getDigitalMaskLsb();
-	uint8_t getAnalogMask();
+	bool isDigitalOn(uint8_t pin) const;
+	uint8_t getDigitalMaskMsb() const;
+	uint8_t getDigitalMaskLsb() const;
+	uint8_t getAnalogMask() const;
 
 	static const uint8_t API_ID = ZB_IO_SAMPLE_RESPONSE;
 };
@@ -494,8 +494,8 @@ public:
 class TxStatusResponse : public FrameIdResponse {
 	public:
 		TxStatusResponse();
-		uint8_t getStatus();
-		bool isSuccess();
+		uint8_t getStatus() const;
+		bool isSuccess() const;
 
 	static const uint8_t API_ID = TX_STATUS_RESPONSE;
 };
@@ -507,13 +507,13 @@ class RxResponse : public RxDataResponse {
 public:
 	RxResponse();
 	// remember rssi is negative but this is unsigned byte so it's up to you to convert
-	uint8_t getRssi();
-	uint8_t getOption();
-	bool isAddressBroadcast();
-	bool isPanBroadcast();
-	uint8_t getDataLength();
-	uint8_t getDataOffset();
-	virtual uint8_t getRssiOffset() = 0;
+	uint8_t getRssi() const;
+	uint8_t getOption() const;
+	bool isAddressBroadcast() const;
+	bool isPanBroadcast() const;
+	uint8_t getDataLength() const;
+	uint8_t getDataOffset() const;
+	virtual uint8_t getRssiOffset() const = 0;
 };
 
 /**
@@ -522,8 +522,8 @@ public:
 class Rx16Response : public RxResponse {
 public:
 	Rx16Response();
-	uint8_t getRssiOffset();
-	uint16_t getRemoteAddress16();
+	uint8_t getRssiOffset() const;
+	uint16_t getRemoteAddress16() const;
 
 	static const uint8_t API_ID = RX_16_RESPONSE;
 protected:
@@ -536,8 +536,8 @@ protected:
 class Rx64Response : public RxResponse {
 public:
 	Rx64Response();
-	uint8_t getRssiOffset();
-	XBeeAddress64& getRemoteAddress64();
+	uint8_t getRssiOffset() const;
+	const XBeeAddress64& getRemoteAddress64() const;
 
 	static const uint8_t API_ID = RX_64_RESPONSE;
 private:
@@ -553,41 +553,41 @@ class RxIoSampleBaseResponse : public RxResponse {
 		/**
 		 * Returns the number of samples in this packet
 		 */
-		uint8_t getSampleSize();
-		bool containsAnalog();
-		bool containsDigital();
+		uint8_t getSampleSize() const;
+		bool containsAnalog() const;
+		bool containsDigital() const;
 		/**
 		 * Returns true if the specified analog pin is enabled
 		 */
-		bool isAnalogEnabled(uint8_t pin);
+		bool isAnalogEnabled(uint8_t pin) const;
 		/**
 		 * Returns true if the specified digital pin is enabled
 		 */
-		bool isDigitalEnabled(uint8_t pin);
+		bool isDigitalEnabled(uint8_t pin) const;
 		/**
 		 * Returns the 10-bit analog reading of the specified pin.
 		 * Valid pins include ADC:0-5.  Sample index starts at 0
 		 */
-		uint16_t getAnalog(uint8_t pin, uint8_t sample);
+		uint16_t getAnalog(uint8_t pin, uint8_t sample) const;
 		/**
 		 * Returns true if the specified pin is high/on.
 		 * Valid pins include DIO:0-8.  Sample index starts at 0
 		 */
-		bool isDigitalOn(uint8_t pin, uint8_t sample);
-		uint8_t getSampleOffset();
+		bool isDigitalOn(uint8_t pin, uint8_t sample) const;
+		uint8_t getSampleOffset() const;
 
 		/**
 		 * Gets the offset of the start of the given sample.
 		 */
-		uint8_t getSampleStart(uint8_t sample);
+		uint8_t getSampleStart(uint8_t sample) const;
 	private:
 };
 
 class Rx16IoSampleResponse : public RxIoSampleBaseResponse {
 public:
 	Rx16IoSampleResponse();
-	uint16_t getRemoteAddress16();
-	uint8_t getRssiOffset();
+	uint16_t getRemoteAddress16() const;
+	uint8_t getRssiOffset() const;
 
 	static const uint8_t API_ID = RX_16_IO_RESPONSE;
 };
@@ -595,8 +595,8 @@ public:
 class Rx64IoSampleResponse : public RxIoSampleBaseResponse {
 public:
 	Rx64IoSampleResponse();
-	XBeeAddress64& getRemoteAddress64();
-	uint8_t getRssiOffset();
+	const XBeeAddress64& getRemoteAddress64() const;
+	uint8_t getRssiOffset() const;
 
 	static const uint8_t API_ID = RX_64_IO_RESPONSE;
 private:
@@ -611,7 +611,7 @@ private:
 class ModemStatusResponse : public XBeeResponse {
 public:
 	ModemStatusResponse();
-	uint8_t getStatus();
+	uint8_t getStatus() const;
 
 	static const uint8_t API_ID = MODEM_STATUS_RESPONSE;
 };
@@ -625,25 +625,25 @@ class AtCommandResponse : public FrameIdResponse {
 		/**
 		 * Returns an array containing the two character command
 		 */
-		uint8_t* getCommand();
+		uint8_t* getCommand() const;
 		/**
 		 * Returns the command status code.
 		 * Zero represents a successful command
 		 */
-		uint8_t getStatus();
+		uint8_t getStatus() const;
 		/**
 		 * Returns an array containing the command value.
 		 * This is only applicable to query commands.
 		 */
-		uint8_t* getValue();
+		uint8_t* getValue() const;
 		/**
 		 * Returns the length of the command value array.
 		 */
-		uint8_t getValueLength();
+		uint8_t getValueLength() const;
 		/**
 		 * Returns true if status equals AT_OK
 		 */
-		bool isOk();
+		bool isOk() const;
 
 		static const uint8_t API_ID = AT_COMMAND_RESPONSE;
 };
@@ -657,33 +657,33 @@ class RemoteAtCommandResponse : public AtCommandResponse {
 		/**
 		 * Returns an array containing the two character command
 		 */
-		uint8_t* getCommand();
+		uint8_t* getCommand() const;
 		/**
 		 * Returns the command status code.
 		 * Zero represents a successful command
 		 */
-		uint8_t getStatus();
+		uint8_t getStatus() const;
 		/**
 		 * Returns an array containing the command value.
 		 * This is only applicable to query commands.
 		 */
-		uint8_t* getValue();
+		uint8_t* getValue() const;
 		/**
 		 * Returns the length of the command value array.
 		 */
-		uint8_t getValueLength();
+		uint8_t getValueLength() const;
 		/**
 		 * Returns the 16-bit address of the remote radio
 		 */
-		uint16_t getRemoteAddress16();
+		uint16_t getRemoteAddress16() const;
 		/**
 		 * Returns the 64-bit address of the remote radio
 		 */
-		XBeeAddress64& getRemoteAddress64();
+		const XBeeAddress64& getRemoteAddress64() const;
 		/**
 		 * Returns true if command was successful
 		 */
-		bool isOk();
+		bool isOk() const;
 
 		static const uint8_t API_ID = REMOTE_AT_COMMAND_RESPONSE;
 	private:
@@ -712,11 +712,11 @@ public:
 	/**
 	 * Returns the frame id
 	 */
-	uint8_t getFrameId();
+	uint8_t getFrameId() const;
 	/**
 	 * Returns the API id
 	 */
-	uint8_t getApiId();
+	uint8_t getApiId() const;
 	// setting = 0 makes this a pure virtual function, meaning the subclass must implement, like abstract in java
 	/**
 	 * Starting after the frame id (pos = 0) and up to but not including the checksum
@@ -724,11 +724,11 @@ public:
 	 * The reason for this is the API ID and Frame ID are common to all requests, whereas my definition of
 	 * frame data is only the API specific data.
 	 */
-	virtual uint8_t getFrameData(uint8_t pos) = 0;
+	virtual uint8_t getFrameData(uint8_t pos) const  = 0;
 	/**
 	 * Returns the size of the api frame (not including frame id or api id or checksum).
 	 */
-	virtual uint8_t getFrameDataLength() = 0;
+	virtual uint8_t getFrameDataLength() const = 0;
 	//void reset();
 protected:
 	void setApiId(uint8_t apiId);
@@ -790,31 +790,32 @@ public:
 	 * Starts the serial connection on the specified serial port
 	 */
 	void begin(Stream &serial);
-	void getResponse(XBeeResponse &response);
+	void getResponse(XBeeResponse &response) const;
 	/**
 	 * Returns a reference to the current response
 	 * Note: once readPacket is called again this response will be overwritten!
 	 */
-	XBeeResponse& getResponse();
+	const XBeeResponse& getResponse() const;
+  XBeeResponse& getResponse();
 	/**
 	 * Sends a XBeeRequest (TX packet) out the serial port
 	 */
-	void send(XBeeRequest &request);
+	void send(XBeeRequest &request) const;
 	//uint8_t sendAndWaitForResponse(XBeeRequest &request, int timeout);
 	/**
 	 * Returns a sequential frame id between 1 and 255
 	 */
-	uint8_t getNextFrameId();
+	uint8_t getNextFrameId() const;
 	/**
 	 * Specify the serial port.  Only relevant for Arduinos that support multiple serial ports (e.g. Mega)
 	 */
 	void setSerial(Stream &serial);
 private:
-	bool available();
+	bool available() const;
 	uint8_t read();
-	void flush();
-	void write(uint8_t val);
-	void sendByte(uint8_t b, bool escape);
+	void flush() const;
+	void write(uint8_t val) const;
+	void sendByte(uint8_t b, bool escape) const;
 	void resetResponse();
 	XBeeResponse _response;
 	bool _escape;
@@ -823,7 +824,7 @@ private:
 	// last byte read
 	uint8_t b;
 	uint8_t _checksumTotal;
-	uint8_t _nextFrameId;
+	mutable uint8_t _nextFrameId;
 	// buffer for incoming RX packets.  holds only the api specific frame data, starting after the api id byte and prior to checksum
 	uint8_t _responseFrameData[MAX_FRAME_DATA_SIZE];
 	Stream* _serial;
@@ -1326,7 +1327,7 @@ public:
 	RemoteAtCommandRequest(XBeeAddress64 &remoteAddress64, uint8_t *command);
 	uint16_t getRemoteAddress16();
 	void setRemoteAddress16(uint16_t remoteAddress16);
-	XBeeAddress64& getRemoteAddress64();
+	const XBeeAddress64& getRemoteAddress64() const;
 	void setRemoteAddress64(XBeeAddress64 &remoteAddress64);
 	bool getApplyChanges();
 	void setApplyChanges(bool applyChanges);

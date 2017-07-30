@@ -5,7 +5,10 @@ namespace rcr {
 namespace stratocomm {
 
 // LED pin
-constexpr uint8_t kLedPin = (uint8_t)13;
+constexpr uint8_t kLedPin = static_cast<uint8_t>(13);
+
+// Max of number of payload octets
+constexpr size_t kMaxPayloadLength = 100;
 
 } // namespace stratocomm
 } // namespace rcr

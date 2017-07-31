@@ -18,6 +18,7 @@ namespace {
   uint8_t static_octets_buffer[kMaxPayloadLength];
 } // namespace
 
+// Get a String from an octet array and its length. Trim either side as needed.
 String get_string(const uint8_t* const octets, uint8_t length,
     uint8_t forward_offset = static_cast<uint8_t>(0),
     uint8_t offset_from_back = static_cast<uint8_t>(0)) {
@@ -35,14 +36,17 @@ String get_string(const uint8_t* const octets, uint8_t length,
   return s;
 }
 
-// Get an octet array of the string content (not including the null
+// Get an octet array of the string content (including the null
 // terminator '\0') along with its length.
 // CATION: Garuntees array lifetime only until called again.
 std::pair<uint8_t*, uint8_t> get_octets(const String& text) {
-  auto length = text.length();
+  auto length = text.length(); // without terminator
+
   for (auto i = 0u; i < length; ++i) {
     static_octets_buffer[i] = static_cast<uint8_t>(text.charAt(i));
   }
+  static_octets_buffer[length++] = '\0'; // add terminator
+
   auto pair = std::make_pair(static_octets_buffer, length);
   return pair;
 }

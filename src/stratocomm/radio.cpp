@@ -15,7 +15,7 @@ namespace {
 } // namespace
 
 Radio::Radio(HardwareSerial & serial)
-    : radio_serial_(serial), Initializable("Radio") {}
+    : Initializable("Radio"), radio_serial_(serial) {}
 
 bool Radio::Init() {
   // Setup serial comm.

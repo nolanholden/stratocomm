@@ -17,11 +17,12 @@
 namespace rcr {
 namespace stratocomm {
 
-Radio sender(Serial1);
-Radio receiver(Serial2);
+namespace {
+  Radio radio(Serial1);
+} //  namespace
 
-std::vector<Initializable*> components{ &sender, &receiver };
-std::vector<Updateable*> updateables{ &sender, &receiver };
+std::vector<Initializable*> components{ &radio };
+std::vector<Updateable*> updateables{ &radio };
 
 inline void blink() {
   digitalWrite(kLedPin, HIGH);
@@ -51,7 +52,7 @@ inline void setup() {
 
 inline void loop() {
   // Send something arbitrary.
-  sender.Send("hey, world!");
+  radio.Send("hey, world. give me a break of that kit-kat bar!");
 
   // Update everything.
   for (auto& u : updateables) {
@@ -59,8 +60,9 @@ inline void loop() {
   }
 
   // If we got a new message, show us.
-  if (receiver.HasUnreadMessage()) {
-    Serial.println(receiver.last_message());
+  if (radio.HasUnreadMessage()) {
+    Serial.print("Message is: ");
+    Serial.println(radio.last_message());
   }
 
   blink();

@@ -8,7 +8,7 @@ namespace stratocomm {
 constexpr uint8_t kLedPin = static_cast<uint8_t>(13);
 
 // Max of number of payload octets
-constexpr size_t kMaxPayloadLength = 100;
+constexpr size_t kMaxPayloadLength = 93;
 
 } // namespace stratocomm
 } // namespace rcr

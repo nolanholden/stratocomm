@@ -41,7 +41,7 @@ class Radio : public virtual Initializable, public virtual Updateable {
   ZBTxRequest outbound_packet_;
 
   // SH & SL Address of receiving XBee
-  XBeeAddress64 addr64_{ 0x000000000000ffff }; // "broadcast" address
+  XBeeAddress64 addr64_; // "broadcast" address
 
   // reused buffer
   uint8_t octets_buffer_[kMaxPayloadLength];

@@ -12,10 +12,16 @@ namespace {
   void on_receive(XBeeResponse& incoming_transmission, uintptr_t) {
     radio_instance->OnReceive(incoming_transmission);
   }
+
+  constexpr uint32_t kXbeeBroadcastAddressMsb = 0x00000000;
+  constexpr uint32_t kXbeeBroadcastAddressLsb = 0x0000ffff;
 } // namespace
 
 Radio::Radio(HardwareSerial & serial)
-    : Initializable("Radio"), radio_serial_(serial) {}
+    : Initializable("Radio"), radio_serial_(serial) {
+  addr64_.setLsb(kXbeeBroadcastAddressLsb);
+  addr64_.setMsb(kXbeeBroadcastAddressMsb);
+}
 
 bool Radio::Init() {
   // Setup serial comm.

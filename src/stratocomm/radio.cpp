@@ -73,9 +73,6 @@ inline void Radio::OnReceive(XBeeResponse& incoming_transmission) {
   auto transmission = get_string(r.getData(), r.getDataLength(), 2);
   strcpy(char_buffer_, transmission.c_str());
   has_new_message_ = true;
-
-
-  Serial.println(char_buffer_);
 }
 
 const char* Radio::last_message() {

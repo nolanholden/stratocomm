@@ -38,9 +38,14 @@ class Radio : public virtual Initializable, public virtual Updateable {
   bool has_new_message_ = false;
 
   // reused outbound packet
-  Tx64Request outbound_packet_;
+  ZBTxRequest outbound_packet_;
+
+  // SH & SL Address of receiving XBee
+  XBeeAddress64 addr64_{ 0x000000000000ffff }; // "broadcast" address
+
   // reused buffer
   uint8_t octets_buffer_[kMaxPayloadLength];
+
   // reused buffer
   // [kMaxPayloadLength + 1] to include null terminator '\0'
   char char_buffer_[kMaxPayloadLength + 1] = "\0";

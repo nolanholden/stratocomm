@@ -23,10 +23,7 @@ bool Radio::Init() {
   xbee_.setSerial(radio_serial_);
 
   // Setup packet addressing.
-  {
-    XBeeAddress64 addr64(0x0013a200, 0x403e0f30); // SH + SL Address of receiving XBee
-    outbound_packet_.setAddress64(addr64);
-  }
+  outbound_packet_.setAddress64(addr64_);
 
   // Set up callback on incoming transmission.
   radio_instance = this;
@@ -42,15 +39,14 @@ void Radio::Send(const String& text) {
   for (auto i = 0u; i < length; ++i) {
     octets_buffer_[i] = static_cast<uint8_t>(text.charAt(i));
   }
-  octets_buffer_[length++] = '\0'; // add terminator
 
   outbound_packet_.setPayload(octets_buffer_, length);
   xbee_.send(outbound_packet_);
 }
 
-inline void Radio::OnReceive(XBeeResponse & incoming_transmission) {
-  Rx64Response r;
-  incoming_transmission.getRx64Response(r);
+inline void Radio::OnReceive(XBeeResponse& incoming_transmission) {
+  ZBRxResponse r;
+  incoming_transmission.getZBRxResponse(r);
 
   auto get_string = [](const uint8_t* const octets, uint8_t length,
     uint8_t forward_offset = static_cast<uint8_t>(0),
@@ -67,12 +63,14 @@ inline void Radio::OnReceive(XBeeResponse & incoming_transmission) {
     for (uint8_t i = 0; i < trimmed_length; ++i) {
       buffer[i] = static_cast<char>(trimmed_octets[i]);
     }
+
+    // Convert to string.
     buffer[trimmed_length] = '\0'; // ensure strlen() will return correct length.
     auto s = String(buffer);
     return s;
   };
 
-  auto transmission = get_string(r.getData(), r.getDataLength());
+  auto transmission = get_string(r.getData(), r.getDataLength(), 2);
   strcpy(char_buffer_, transmission.c_str());
   has_new_message_ = true;
 

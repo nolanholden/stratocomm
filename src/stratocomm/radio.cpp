@@ -6,6 +6,8 @@ namespace rcr {
 namespace stratocomm {
 
 namespace {
+  // DANGER: this design effectively makes Radio Singleton.
+  // TODO: redsign to allow multiple radios
   Radio* radio_instance; // ok, because we only use one.
 
   // Surrogate callback, submitted to XBee library, to call Radio member function.
@@ -13,19 +15,24 @@ namespace {
     radio_instance->OnReceive(incoming_transmission);
   }
 
+  // Address which XBee interperets as a broadcast.
   constexpr uint32_t kXbeeBroadcastAddressMsb = 0x00000000;
   constexpr uint32_t kXbeeBroadcastAddressLsb = 0x0000ffff;
+
+  // The XBee's interal baud rate for communication with its commanding module.
+  // (This must exactly match the (software configured) XBee baud rate.)
+  constexpr uint32_t kXbeeSerialInterfaceBaudRate = 9600;
 } // namespace
 
 Radio::Radio(HardwareSerial & serial)
     : Initializable("Radio"), radio_serial_(serial) {
-  addr64_.setLsb(kXbeeBroadcastAddressLsb);
   addr64_.setMsb(kXbeeBroadcastAddressMsb);
+  addr64_.setLsb(kXbeeBroadcastAddressLsb);
 }
 
 bool Radio::Init() {
   // Setup serial comm.
-  radio_serial_.begin(9600);
+  radio_serial_.begin(kXbeeSerialInterfaceBaudRate);
   xbee_.setSerial(radio_serial_);
 
   // Setup packet addressing.
@@ -48,6 +55,7 @@ void Radio::Send(const String& text) {
 
   outbound_packet_.setPayload(octets_buffer_, length);
   xbee_.send(outbound_packet_);
+  Serial.println("sent");
 }
 
 inline void Radio::OnReceive(XBeeResponse& incoming_transmission) {
@@ -61,22 +69,25 @@ inline void Radio::OnReceive(XBeeResponse& incoming_transmission) {
     char buffer[kMaxPayloadLength + 1];
 
     const uint8_t* const trimmed_octets = &(octets[forward_offset]);
-    const uint8_t trimmed_length = length - forward_offset - offset_from_back;
-    if (trimmed_length <= 0) {
+
+    // if length < 1 return empty string.
+    if (length <= forward_offset + offset_from_back) {
       auto empty_string = String("");
       return empty_string;
     }
+
+    const uint8_t trimmed_length = length - forward_offset - offset_from_back;
     for (uint8_t i = 0; i < trimmed_length; ++i) {
       buffer[i] = static_cast<char>(trimmed_octets[i]);
     }
+    buffer[trimmed_length] = '\0'; // ensure strlen() will return correct length.
 
     // Convert to string.
-    buffer[trimmed_length] = '\0'; // ensure strlen() will return correct length.
     auto s = String(buffer);
     return s;
   };
 
-  auto transmission = get_string(r.getData(), r.getDataLength(), 2);
+  auto transmission = get_string(r.getData(), r.getDataLength());
   strcpy(char_buffer_, transmission.c_str());
   has_new_message_ = true;
 }

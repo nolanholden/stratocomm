@@ -21,7 +21,7 @@ namespace {
 
   // The XBee's interal baud rate for communication with its commanding module.
   // (This must exactly match the (software configured) XBee baud rate.)
-  constexpr uint32_t kXbeeSerialInterfaceBaudRate = 9600;
+  constexpr uint32_t kXbeeSerialInterfaceBaudRate = 230400;
 } // namespace
 
 Radio::Radio(HardwareSerial & serial)
@@ -70,7 +70,7 @@ inline void Radio::OnReceive(XBeeResponse& incoming_transmission) {
 
     const uint8_t* const trimmed_octets = &(octets[forward_offset]);
 
-    // if length < 1 return empty string.
+    // if new length is < 1 return empty string.
     if (length <= forward_offset + offset_from_back) {
       auto empty_string = String("");
       return empty_string;

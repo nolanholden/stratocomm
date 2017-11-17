@@ -42,6 +42,9 @@
     <ClInclude Include="octet-array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="stratocomm-sendspeed-test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="initializable.cpp">
